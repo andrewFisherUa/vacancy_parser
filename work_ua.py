@@ -45,7 +45,7 @@ def parser(headers, base_url):
     return jobs
 
 def files_writer(jobs):
-    with open('parsed_jobs_work_ua.csv', 'a') as file:
+    with open('parsed_csv/work_ua_parsed.csv', 'a') as file:
         a_pen = csv.writer(file)
         a_pen.writerow(('Title', 'URL', 'Info'))
         for job in jobs:
