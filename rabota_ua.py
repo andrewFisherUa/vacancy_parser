@@ -32,10 +32,12 @@ def parser(headers, base_url):
         divs = soup.find_all('article', attrs={'class' : 'f-vacancylist-vacancyblock'})
         for div in divs:
             title = div.find('a')['title']
+            href = 'https://rabota.ua' + div.find('a')['href']
             company = div.find('a', attrs={'class' : 'f-text-dark-bluegray f-visited-enable'}).text
             info = div.find('p', attrs={'class' : 'f-vacancylist-shortdescr f-text-gray fd-craftsmen'}).text
             jobs.append({
                 'title' : title,
+                'href' : href,
                 'company' : company,
                 'info' : info,
             })
@@ -45,12 +47,12 @@ def parser(headers, base_url):
     return jobs
 
 def files_writer(jobs):
-    with open('parsed_csv/rabota_ua_parsed.csv', 'a') as file:
+    with open('parsed_csv/rabota_ua_parsed.csv', 'w') as file:
         a_pen = csv.writer(file)
-        a_pen.writerow(('Title', 'Company', 'Info'))
+        a_pen.writerow(('Title', 'URL', 'Company', 'Info'))
         try:
             for job in jobs:
-                a_pen.writerow((job['title'], job['company'], job['info']))
+                a_pen.writerow((job['title'], job['href'], job['company'], job['info']))
         except:
             pass
 jobs = parser(headers, base_url)

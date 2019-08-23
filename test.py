@@ -17,14 +17,10 @@ def parser(headers, base_url):
     request = session.get(base_url, headers=headers)
     if request.status_code == 200:
         soup = bs(request.content, 'lxml')
-        pagination = soup.find('dl', attrs={'id': 'ctl00_content_vacancyList_gridList_ctl23_pagerInnerTable'}).text
-        pagination_id = list(pagination)
-        count = int(pagination_id[-10])
-        for i in range(count):
-            url = f'https://rabota.ua/zapros/python/%d0%ba%d0%b8%d0%b5%d0%b2/pg{i}'
-            if url not in urls:
-                urls.append(url)
-            print(url)
+        divs = soup.find_all('article', attrs={'class' : 'f-vacancylist-vacancyblock'})
+        for div in divs:
+            href = 'https://rabota.ua' + div.find('a')['href']
+            print(href)
 
     else:
         print('Error')
