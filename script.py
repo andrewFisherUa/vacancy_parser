@@ -1,4 +1,3 @@
-import time
 import csv
 import requests
 from bs4 import BeautifulSoup as bs
@@ -17,7 +16,6 @@ def parser(base_url, headers):
     session = requests.Session()
     request = session.get(base_url, headers=headers)
     if request.status_code == 200:
-        start = time.time()
         soup = bs(request.content, 'lxml')
         try:
             pagination = soup.find_all('a', attrs={'data-qa' : 'pager-page'})
@@ -46,11 +44,9 @@ def parser(base_url, headers):
                 'company' : company,
                 'content' : content,
             })
-        finish = time.time()
-        # result = finish - start
         print(len(jobs))
     else:
-        print('ERROR')
+        print('ERROR or Done', request.status_code)
     return jobs
 
 
