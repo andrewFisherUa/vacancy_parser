@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
+import csv
 
 headers = {
     'accept' : '*/*',
@@ -40,6 +41,17 @@ def parser(headers, base_url):
             })
         print(len(jobs))
     else:
-        print('error')
+        print('Error or done ' + str(request.status_code))
+    return jobs
 
-parser(headers, base_url)
+def files_writer(jobs):
+    with open('parsed_jobs_work_ua.csv', 'a') as file:
+        a_pen = csv.writer(file)
+        a_pen.writerow(('Title', 'URL', 'Info'))
+        for job in jobs:
+            a_pen.writerow((job['title'], job['href'], job['info']))
+
+
+
+jobs = parser(headers, base_url)
+files_writer(jobs)
