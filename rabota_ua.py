@@ -45,10 +45,13 @@ def parser(headers, base_url):
             })
         print(len(jobs))
     else:
-        print('Error or done', str(request.status_code))
-        parse_time_finish = time.time()
-        parse_time_result = parse_time_finish - parse_time_start
-        print('Parsed in ', str(parse_time_result), 'seconds')
+        if request.status_code is not 200:
+            print('ERROR!!!', request.status_code)
+        else:
+            parse_time_finish = time.time()
+            parse_time_result = parse_time_finish - parse_time_start
+            print('Parsing done.')
+            print('Parsed in ', str(parse_time_result), 'seconds')
     return jobs
 
 def files_writer(jobs):

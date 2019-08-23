@@ -46,12 +46,15 @@ def parser(base_url, headers):
                 'company' : company,
                 'content' : content,
             })
-        print(len(jobs))
+        print('Vacancies scanned: ', len(jobs))
     else:
-        print('ERROR or Done', request.status_code)
-        parse_time_finish = time.time()
-        parse_time_result = parse_time_finish - parse_time_start
-        print('Parsed in ', str(parse_time_result), 'seconds')
+        if request.status_code is not 200:
+            print('ERROR!!!', request.status_code)
+        else:
+            parse_time_finish = time.time()
+            parse_time_result = parse_time_finish - parse_time_start
+            print('Parsing done.')
+            print('Parsed in ', str(parse_time_result), 'seconds')
     return jobs
 
 
