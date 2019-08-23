@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import csv
+import time
 
 headers = {
     'accept' : '*/*',
@@ -9,6 +10,7 @@ headers = {
 
 base_url = 'https://www.work.ua/jobs-kyiv-python/?page=1'
 def parser(headers, base_url):
+    parse_time_start = time.time()
     jobs = []
     urls = []
     urls.append(base_url)
@@ -42,6 +44,9 @@ def parser(headers, base_url):
         print(len(jobs))
     else:
         print('Error or done ' + str(request.status_code))
+        parse_time_finish = time.time()
+        parse_time_result = parse_time_finish - parse_time_start
+        print('Parsed in ', str(parse_time_result), 'seconds')
     return jobs
 
 def files_writer(jobs):

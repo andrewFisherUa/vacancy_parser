@@ -1,6 +1,7 @@
 import csv
 import requests
 from bs4 import BeautifulSoup as bs
+import time
 
 headers = {
     'accept' : '*/*',
@@ -10,6 +11,7 @@ headers = {
 base_url = 'https://rabota.ua/zapros/python/%d0%ba%d0%b8%d0%b5%d0%b2/pg1'
 
 def parser(headers, base_url):
+    parse_time_start = time.time()
     jobs = []
     urls = []
     session = requests.Session()
@@ -44,6 +46,9 @@ def parser(headers, base_url):
         print(len(jobs))
     else:
         print('Error or done', str(request.status_code))
+        parse_time_finish = time.time()
+        parse_time_result = parse_time_finish - parse_time_start
+        print('Parsed in ', str(parse_time_result), 'seconds')
     return jobs
 
 def files_writer(jobs):

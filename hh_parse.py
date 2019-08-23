@@ -1,6 +1,7 @@
 import csv
 import requests
 from bs4 import BeautifulSoup as bs
+import time
 
 headers = {
     'accept' : '*/*',
@@ -10,6 +11,7 @@ headers = {
 base_url = 'https://kiev.hh.ua/search/vacancy?L_is_autosearch=false&area=115&clusters=true&currency_code=UAH&enable_snippets=true&text=python&page=0'
 
 def parser(base_url, headers):
+    parse_time_start = time.time()
     jobs = []
     urls = []
     urls.append(base_url)
@@ -29,7 +31,7 @@ def parser(base_url, headers):
     for url in urls:
         request = session.get(url, headers=headers)
         soup = bs(request.content, 'lxml')
-        divs = soup.find_all('div', attrs={'class' : 'vacancy-serp-item'})
+        # divs = soup.find_all('div', attrs={'class' : 'vacancy-serp-item'})
         divs = soup.find_all('div', attrs={'data-qa' : 'vacancy-serp__vacancy'})
         for div in divs:
             title = div.find('a', attrs={'data-qa' : 'vacancy-serp__vacancy-title'}).text
@@ -47,7 +49,11 @@ def parser(base_url, headers):
         print(len(jobs))
     else:
         print('ERROR or Done', request.status_code)
+        parse_time_finish = time.time()
+        parse_time_result = parse_time_finish - parse_time_start
+        print('Parsed in ', str(parse_time_result), 'seconds')
     return jobs
+
 
 
 def files_writer(jobs):
